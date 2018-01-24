@@ -85,7 +85,7 @@ public class MainServer {
 		Log.set(Log.LEVEL_INFO);
 		Random rand = new Random();
 		randomFloatNumber = rand.nextFloat();
-		MainServer main = new MainServer(1687, 1687);
+		MainServer main = new MainServer(27000, 27000);
 		main.startServer();
 	}
 
