@@ -34,8 +34,6 @@ public class MainServerListener extends Listener {
 		}
 
 		players.put(connection.getID(), player);
-		MainServer.jTextArea.append(connection.getID() + " (ID) joined the server (Player.entity)");
-		MainServer.jTextArea.append("\n");
 	} // end connected
 
 	public void disconnected(Connection connection) {
@@ -43,9 +41,6 @@ public class MainServerListener extends Listener {
 		NetworkClasses.PacketRemovePlayer removePacket = new NetworkClasses.PacketRemovePlayer();
 		removePacket.id = connection.getID();
 		MainServer.server.sendToAllExceptTCP(connection.getID(), removePacket);
-		MainServer.jTextArea.append(connection.getID() + " (ID) left the server (Player.entity)");
-		MainServer.jTextArea.append("\n");
-		MainServer.jTextArea.append("\n");
 	} // end disconnected
 
 	public void received(Connection connection, Object object) {
