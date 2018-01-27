@@ -5,8 +5,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -32,13 +34,16 @@ public class PlayerClient extends StateBasedGame {
 		this.addState(new CreditsState());
 	}
 
+	//openGL windwon set display
 	public static void main(String args[]) throws SlickException {
 		userName = getUserNameAndpasswordField_password();
+
 		AppGameContainer app = new AppGameContainer(new PlayerClient("ver 1.0"));
+		Display.setInitialBackground(255,255,255);
 		app.setAlwaysRender(true);
 		app.setTargetFrameRate(60);
 		app.setDisplayMode(800, 400, false);
-		app.setShowFPS(false);
+		app.setShowFPS(true);
 		app.setVSync(true);
 		app.start();
 	}

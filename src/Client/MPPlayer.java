@@ -2,7 +2,7 @@ package Client;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-
+//ghost player sort of factory class
 public class MPPlayer {
 
 	public float x = 256, y = 256;

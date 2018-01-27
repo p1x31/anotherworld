@@ -28,12 +28,14 @@ public class PlayerChar {
 
 	public Connection c;
 
+	//bound by window size
 	public PlayerChar() {
 		Random rand = new Random();
+		//grid
 		x = rand.nextInt(800);
 		y = rand.nextInt(400);
-		width = 16;
-		height = 16;
+		width = 32;
+		height = 32;
 	}
 
 	public void update(int delta, GameContainer container) {
@@ -67,10 +69,12 @@ public class PlayerChar {
 
 	public void render(Graphics g, Color c) {
 		g.setColor(c);
-		if(y > 3 && userName != null) g.drawString(this.userName, x - this.userName.length() * 4, y - height);
+		//render username
+		if(y > 3 && userName != null) g.drawString(this.userName, x - this.userName.length() * 4 , y - height);
 		else if(y <= 3 && userName != null) g.drawString(this.userName, x - this.userName.length() * 4, y + height);
 		// render player
-		g.fillRect(x, y, width, height);
+		g.fillArc(x,y, width,height,10,90);
+		//g.fillRect(x, y, width, height);
 	} // end render
 
 }

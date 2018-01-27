@@ -9,6 +9,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -34,13 +35,14 @@ public class MenuState extends BasicGameState {
 	public static JTextField textField_port;
 	public static JLabel label_botCount;
 	public static JTextField textField_botCount;
+	public static JLabel localhost,dedicated;
 
 	public static String ipAddress;
 	public static int port;
 	public static int botCount = 1;
 
 	public int welcomeTimer = 1000 * 100;
-	public static Color fontColorChanger = new Color(Color.white);
+	public static Color fontColorChanger = new Color(Color.black);
 	public static Font font = new Font("Century Gothic", Font.PLAIN, 18);
 	public static TrueTypeFont gothic = new TrueTypeFont(font, true);
 	public float fontX = 0;
@@ -53,11 +55,11 @@ public class MenuState extends BasicGameState {
 	public Random rand = new Random();
 
 	public static Input inputHandler;
-
+//input
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		inputHandler = container.getInput();
 	}
-
+//Mouse hover game container
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 		posX = Mouse.getX();
 		posY = Mouse.getY();
@@ -66,7 +68,8 @@ public class MenuState extends BasicGameState {
 		fontX += dir * 0.4;
 		if(fontX >= container.getWidth() - 120) dir = -1;
 		if(fontX <= 0) dir = 1;
-		if((posX > 661 && posX < 766) && (posY > 240 && posY < 259)) {
+		// single player chosen
+		if((posX > 10 && posX < 766) && (posY > 240 && posY < 259)) {
 			if(Mouse.isButtonDown(0)) {
 				SinglePlayerState.backToMenu = false;
 				label_botCount = new JLabel("Number of botCount?");
@@ -85,15 +88,20 @@ public class MenuState extends BasicGameState {
 				sbg.enterState(ID_SINGLEPLAYERSTATE, new FadeOutTransition(), new FadeInTransition());
 			}
 		}
-		if((posX > 661 && posX < 766) && (posY > 208 && posY < 228)) {
+
+		//multilayer chosen
+		if((posX > 10 && posX < 766) && (posY > 208 && posY < 228)) {
 			if(Mouse.isButtonDown(0)) {
 				label_ipAddress = new JLabel("IP Address:");
 				textField_ipAddress = new JTextField();
 
 				label_port = new JLabel("Port:");
 				textField_port = new JTextField();
+				localhost = new JLabel("localhost = 127.0.0.1:27000");
+				dedicated = new JLabel("dedicated = 35.198.160.91:27000");
 
-				Object[] array = { label_ipAddress, textField_ipAddress, label_port, textField_port };
+
+				Object[] array = { label_ipAddress, textField_ipAddress, label_port, textField_port, localhost, dedicated };
 
 				int res = JOptionPane.showConfirmDialog(null, array, "IpAddress:", JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.PLAIN_MESSAGE);
@@ -110,53 +118,62 @@ public class MenuState extends BasicGameState {
 				}
 			}
 		}
-		if((posX > 661 && posX < 766) && (posY > 178 && posY < 200)) {
+		//credits chosen
+		if((posX > 10 && posX < 766) && (posY > 178 && posY < 200)) {
 			if(Mouse.isButtonDown(0)) {
 				sbg.enterState(ID_CREDITS, new FadeOutTransition(), new FadeInTransition());
 			}
 		}
-		if((posX > 661 && posX < 766) && (posY > 149 && posY < 170)) {
+		//audio chosen
+		if((posX > 10 && posX < 766) && (posY > 149 && posY < 170)) {
+			if(Mouse.isButtonDown(0)) {
+				sbg.enterState(ID_AUDIO, new FadeOutTransition(), new FadeInTransition());
+			}
+		}
+		//exit chosen
+		if((posX > 10 && posX < 766) && (posY > 119 && posY < 140)) {
 			if(Mouse.isButtonDown(0)) {
 				System.exit(0);
 			}
 		}
 	}
-
+//UI labels
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
+		//black font
 		g.setColor(Color.white);
 		g.setFont(gothic);
-		if(welcomeTimer > 0) {
-			fontColorChanger.darker();
-			g.drawString("Hello " + PlayerClient.userName, 10 + (fontX), 370);
+//		if(welcomeTimer > 0) {
+//			fontColorChanger.darker();
+//			g.drawString("Hello " + PlayerClient.userName, 10 + (fontX), 370);
+//		}
+		g.drawString("SinglePlayer", 10, 140);
+		g.drawString("MultiPlayer", 10, 170);
+		g.drawString("Credits", 10, 200);
+		g.drawString("Audio",10, 230);
+		g.drawString("Exit", 10, 260);
+//green areas
+		if((posX > 10 && posX < 766) && (posY > 240 && posY < 259)) {
+			g.setColor(new Color(0, 0, 155, 150));
+			g.fillRect(10, 140, 120, 25);
 		}
-		g.drawString("SinglePlayer", 660, 140);
-		g.drawString("MultiPlayer", 668, 170);
-		g.drawString("Credits", 701, 200);
-		g.drawString("Audio",711, 230);
-		g.drawString("Exit", 731, 260);
-
-		if((posX > 661 && posX < 766) && (posY > 240 && posY < 259)) {
-			g.setColor(new Color(0, 255, 0, 150));
-			g.fillRect(650, 140, 120, 25);
+		if((posX > 10 && posX < 766) && (posY > 208 && posY < 228)) {
+			g.setColor(new Color(0, 0, 155, 150));
+			g.fillRect(10, 170, 120, 25);
 		}
-		if((posX > 661 && posX < 766) && (posY > 208 && posY < 228)) {
-			g.setColor(new Color(0, 255, 0, 150));
-			g.fillRect(650, 170, 120, 25);
+		if((posX > 10 && posX < 766) && (posY > 178 && posY < 200)) {
+			g.setColor(new Color(0, 0, 155, 150));
+			g.fillRect(10, 200, 120, 25);
 		}
-		if((posX > 661 && posX < 766) && (posY > 178 && posY < 200)) {
-			g.setColor(new Color(0, 255, 0, 150));
-			g.fillRect(650, 200, 120, 25);
+		if((posX > 10 && posX < 766) && (posY > 149 && posY < 169)) {
+			g.setColor(new Color(0, 0, 155, 150));
+			g.fillRect(10, 230, 120, 25);
 		}
-		if((posX > 661 && posX < 766) && (posY > 149 && posY < 169)) {
-			g.setColor(new Color(0, 255, 0, 150));
-			g.fillRect(650, 230, 120, 25);
+		if((posX > 10 && posX < 766) && (posY > 119 && posY < 139)) {
+			g.setColor(new Color(0, 0, 155, 150));
+			g.fillRect(10, 260, 120, 25);
 		}
-		if((posX > 661 && posX < 766) && (posY > 119 && posY < 139)) {
-			g.setColor(new Color(0, 255, 0, 150));
-			g.fillRect(650, 260, 120, 25);
-		}
-
-		g.setColor(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
+// square effects random colours and shape 255- all colours
+		g.setColor(new Color(rand.nextInt(1), rand.nextInt(1), rand.nextInt(1), rand.nextInt(1)));
 		if(time == 3) {
 			g.fillRect(rand.nextInt(800), rand.nextInt(400), rand.nextInt(60), rand.nextInt(60));
 			time = 0;

@@ -2,7 +2,7 @@ package Client;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-
+//class responsible for player creation in multilayer
 public class SpeedCube {
 	public float x;
 	public float y;

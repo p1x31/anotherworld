@@ -17,6 +17,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -63,7 +64,7 @@ public class MultiPlayerState extends BasicGameState {
 	public static PlayerChar player = new PlayerChar();
 	static Map<Integer, MPPlayer> players = new HashMap<Integer, MPPlayer>();
 	public static SpeedCube speedCube;
-	public static Shape triangle;
+	public static Shape circle;
 
 	public MultiPlayerState() {
 
@@ -127,21 +128,26 @@ public class MultiPlayerState extends BasicGameState {
 		speedCube = new SpeedCube();
 	}
 
+	//initialization of the character
+	//power up
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
-		triangle = new Rectangle(rand * (800 - 16), rand * (400 - 16), 16, 16);
-		System.out.println(rand + " " + triangle.getX() + " " + triangle.getY());
+		//cube = new Rectangle(rand * (800 - 16), rand * (400 - 16), 16, 16);
+		circle = new Circle(rand * (800 - 16), rand * (400 - 16), 10, 15);
+		System.out.println(rand + " " + circle.getX() + " " + circle.getY());
 	}
 
 	public static boolean isCollision(PlayerChar player, MPPlayer mpPlayer) {
 		return !(player.x > mpPlayer.x + mpPlayer.width || player.x + player.width < mpPlayer.x
 				|| player.y > mpPlayer.y + mpPlayer.height || player.y + player.height < mpPlayer.y);
 	}
-
+	//update of movement
+	//power up
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 
 		if(flag == 0) {
-			triangle = new Rectangle(rand * (800 - 16), rand * (400 - 16), 16, 16);
-			System.out.println(rand + " " + triangle.getX() + " " + triangle.getY());
+			//cube = new Rectangle(rand * (800 - 16), rand * (400 - 16), 16, 16);
+			circle = new Circle(rand * (800 - 16), rand * (400 - 16), 10, 15);
+			System.out.println(rand + " " + circle.getX() + " " + circle.getY());
 			flag = 1;
 		}
 
@@ -150,7 +156,7 @@ public class MultiPlayerState extends BasicGameState {
 		}
 		
 		// Collisions
-		if(isCollisionShape(player, triangle)) {
+		if(isCollisionShape(player, circle)) {
 			player.score++;
 			NetworkClasses.PacketScore packet = new NetworkClasses.PacketScore();
 			packet.score = player.score;
@@ -207,33 +213,34 @@ public class MultiPlayerState extends BasicGameState {
 	}
 	
 	public void changeScoreCube() {
-		triangle.setX(random.nextFloat() * (800 - 16));
-		triangle.setY(random.nextFloat() * (400 - 16));
+		circle.setX(random.nextFloat() * (800 - 16));
+		circle.setY(random.nextFloat() * (400 - 16));
 		NetworkClasses.PacketScoreCubeUpdate packet = new NetworkClasses.PacketScoreCubeUpdate();
-		packet.x = triangle.getX();
-		packet.y = triangle.getY();
+		packet.x = circle.getX();
+		packet.y = circle.getY();
 		client.sendUDP(packet);
 	}
 
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 
 		// Render player
-		player.render(g, Color.red);
+		player.render(g, Color.yellow);
 
 		// Render other players
 		for (MPPlayer mp : players.values()) {
-			mp.render(g, Color.blue);
+			mp.render(g, Color.white);
 		}
-
+//see scores with tab
 		if(MenuState.inputHandler.isKeyDown(Input.KEY_TAB)) {
 			renderScore(container, sbg, g);
 		}
 		
-		// Render score triangle
+		// Render scoring circle
 		g.setColor(Color.orange);
-		g.fill(triangle);
+		g.drawString("powerUP",circle.getX()+20,circle.getY()-1);
+		g.fill(circle);
 		
-
+//game over
 		if(gameOver) {
 			g.setColor(Color.red);
 			g.drawRect(200, 170, 400, 100);

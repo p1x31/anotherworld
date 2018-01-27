@@ -21,13 +21,13 @@ public class CreditsState extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		
 	}
-
+//when esc pressed
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 		if(container.getInput().isKeyDown(Input.KEY_ESCAPE)){
 			sbg.enterState(0, new FadeInTransition(), new SelectTransition());
 		}
 	}
-
+// create new window
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setFont(creditsGothic);
 		g.setColor(Color.cyan);

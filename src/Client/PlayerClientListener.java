@@ -29,12 +29,13 @@ public class PlayerClientListener extends Listener {
 				Log.info("Login failed");
 			}
 		}
-		
+		//Add player
 		if(object instanceof PacketAddPlayer){
 			PacketAddPlayer packet = (PacketAddPlayer) object;
 			MPPlayer newPlayer = new MPPlayer();
 			MultiPlayerState.players.put(packet.id, newPlayer);
-		} else if(object instanceof PacketRemovePlayer){
+		} //remove player
+		else if(object instanceof PacketRemovePlayer){
 			PacketRemovePlayer packet = (PacketRemovePlayer) object;
 			MultiPlayerState.players.remove(packet.id);
 		} else if(object instanceof PacketUpdateX){
@@ -44,6 +45,7 @@ public class PlayerClientListener extends Listener {
 			PacketUpdateY packet = (PacketUpdateY) object;
 			MultiPlayerState.players.get(packet.id).y = packet.y;
 		} else if(object instanceof PacketUserName){
+			//add player to hashmap
 			PacketUserName packet = (PacketUserName) object;
 			for(Map.Entry<Integer, MPPlayer> entry : MultiPlayerState.players.entrySet() ){
 				if(entry.getKey() == packet.id){
@@ -55,6 +57,7 @@ public class PlayerClientListener extends Listener {
 			RandomNumber packet = (RandomNumber)object;
 			MultiPlayerState.rand = packet.randomFloat;
 		}
+		//scores for each player
 		if(object instanceof PacketScore){
 			PacketScore packet = (PacketScore) object;
 			for(Map.Entry<Integer, MPPlayer> entry : MultiPlayerState.players.entrySet() ){
@@ -65,8 +68,8 @@ public class PlayerClientListener extends Listener {
 		}
 		if(object instanceof PacketScoreCubeUpdate){
 			PacketScoreCubeUpdate packet = (PacketScoreCubeUpdate) object;
-			MultiPlayerState.triangle.setX(packet.x);
-			MultiPlayerState.triangle.setY(packet.y);
+			MultiPlayerState.circle.setX(packet.x);
+			MultiPlayerState.circle.setY(packet.y);
 		}
 		if(object instanceof PacketGameOver){
 			PacketGameOver packet = (PacketGameOver) object;

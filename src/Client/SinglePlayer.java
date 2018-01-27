@@ -34,30 +34,42 @@ public class SinglePlayer {
 		delta = delta * 5;
 		float tempX = x;
 		float tempY = y;
-
+		//bots move to powerup/ circle.getX() - power up position
 		if(ai) {
-			if(this.x < SinglePlayerState.cube.getX() && this.y >= SinglePlayerState.cube.getY()) {
-				this.x += this.speed * delta / 1000f;
-				this.y -= this.speed * delta / 1000f;
-				// System.out.println("First");
+//			//bot movement different directions collecting power ups
+			//https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)
+//			if(this.x < SinglePlayerState.circle.getX() && this.y >= SinglePlayerState.circle.getY()) {
+//				this.x += this.speed * delta / 1000f;
+//				this.y -= this.speed * delta / 1000f;
+//				// System.out.println("First");
+//			}
+//			if(this.x >= SinglePlayerState.circle.getX() && this.y > SinglePlayerState.circle.getY()) {
+//				this.x -= this.speed * delta / 1000f;
+//				this.y -= this.speed * delta / 1000f;
+//				// System.out.println("Second");
+//			}
+//			if(this.x > SinglePlayerState.circle.getX() && this.y <= SinglePlayerState.circle.getY()) {
+//				this.x -= this.speed * delta / 1000f;
+//				this.y += this.speed * delta / 1000f;
+//				// System.out.println("third");
+//			}
+//			if(this.x <= SinglePlayerState.circle.getX() && this.y < SinglePlayerState.circle.getY()) {
+//				// System.out.println("fourth");
+//				this.x += this.speed * delta / 1000f;
+//				this.y +=this.speed * delta / 1000f;
+//			}
+			//follows player in second quadrant
+			if(this.x >= SinglePlayerState.player.x && this.y > SinglePlayerState.player.y){
+				this.x -= this.speed *delta /1000f;
+				this.y -= this.speed *delta /1000f;
 			}
-			if(this.x >= SinglePlayerState.cube.getX() && this.y > SinglePlayerState.cube.getY()) {
-				this.x -= this.speed * delta / 1000f;
-				this.y -= this.speed * delta / 1000f;
-				// System.out.println("Second");
+			//goes to power up in forth quadrant
+			if(this.x <= SinglePlayerState.circle.getX() && this.y < SinglePlayerState.circle.getY()){
+				this.x += this.speed *delta /1000f;
+				this.y += this.speed *delta /1000f;
 			}
-			if(this.x > SinglePlayerState.cube.getX() && this.y <= SinglePlayerState.cube.getY()) {
-				this.x -= this.speed * delta / 1000f;
-				this.y += this.speed * delta / 1000f;
-				// System.out.println("third");
-			}
-			if(this.x <= SinglePlayerState.cube.getX() && this.y < SinglePlayerState.cube.getY()) {
-				// System.out.println("fourth");
-				this.x += this.speed * delta / 1000f;
-				this.y +=this.speed * delta / 1000f;
-			}
-
 		} else {
+			//player movement controls and speed ADD mouse pointer here?
 			if((MenuState.inputHandler.isKeyDown(Input.KEY_W))) {
 				y -= speed * delta / 1000f;
 			}
@@ -71,7 +83,7 @@ public class SinglePlayer {
 				x += speed * delta / 1000f;
 			}
 		}
-
+		//bot just stays still if there is a collision
 		if(!ai) {
 			for (int i = 0; i < SinglePlayerState.gameBots.size(); i++) {
 				if(SinglePlayerState.isCollision(this, SinglePlayerState.gameBots.get(i))) {
@@ -85,7 +97,7 @@ public class SinglePlayer {
 				y = tempY;
 			}
 		}
-
+		//push against the walls
 		if(y < 0) y = 0;
 		if(x < 0) x = 0;
 		if(y + height > container.getHeight()) y = container.getHeight() - height;
@@ -94,9 +106,12 @@ public class SinglePlayer {
 
 	public void render(Graphics g, Color c) {
 		g.setColor(c);
+		//player name move around when near corners
 		if(y > 3) g.drawString(this.userName, x - this.userName.length() * 4, y - height);
 		else if(y <= 3) g.drawString(this.userName, x - this.userName.length() * 4, y + height);
 		// render player
+		//g.fillArc(x,y, width,height,80,90);
+		//render both ai and player actually
 		g.fillRect(x, y, width, height);
 	} // end render
 }

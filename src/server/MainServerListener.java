@@ -26,13 +26,13 @@ public class MainServerListener extends Listener {
 		PacketAddPlayer addPacket = new PacketAddPlayer();
 		addPacket.id = connection.getID();
 		MainServer.server.sendToAllExceptTCP(connection.getID(), addPacket);
-
+		//iterate through
 		for (PlayerChar p : players.values()) {
 			PacketAddPlayer addPacket2 = new PacketAddPlayer();
 			addPacket2.id = p.c.getID();
 			connection.sendTCP(addPacket2);
 		}
-
+		//add to hashmap
 		players.put(connection.getID(), player);
 	} // end connected
 

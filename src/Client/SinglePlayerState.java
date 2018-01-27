@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -33,14 +34,16 @@ public class SinglePlayerState extends BasicGameState {
 
 	public int gameOverTimer = 1000 * 15;
 
-	public static Shape cube;
+	public static Shape circle;
+	public static Shape triangle;
 
 	public Random rand = new Random();
 	public static ArrayList<SinglePlayer> gameBots;
 
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		player = new SinglePlayer(PlayerClient.userName);
-		cube = new Rectangle(rand.nextFloat() * (800 - 16), rand.nextFloat() * (400 - 16), 16, 16);
+		//cube = new Rectangle(rand.nextFloat() * (800 - 16), rand.nextFloat() * (400 - 16), 16, 16);
+		circle = new Circle(rand.nextFloat() * (800 - 16), rand.nextFloat() * (400 - 16), 10, 10);
 	}
 
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
@@ -48,6 +51,7 @@ public class SinglePlayerState extends BasicGameState {
 			closeEverything();
 			sbg.enterState(0, new FadeInTransition(), new SelectTransition());
 		}
+		// bound number of bot to 10
 		if(flag == 0) {
 			mainDelta = delta;
 			player = new SinglePlayer(PlayerClient.userName);
@@ -55,12 +59,14 @@ public class SinglePlayerState extends BasicGameState {
 			if(MenuState.botCount > 10 || MenuState.botCount <= 0) bots = 10;
 			gameBots = new ArrayList<>();
 			for (int i = 0; i < bots; i++) {
-				gameBots.add(new SinglePlayer("Bot " + (i + 1)));
+				//name for bots
+				gameBots.add(new SinglePlayer("AI " + (i + 1)));
 				gameBots.get(i).speed = rand.nextInt(30);
 			}
-			cube = new Rectangle(rand.nextFloat() * 800, rand.nextFloat() * 400, 16, 16);
+			circle = new Circle(rand.nextFloat() * (800 - 16), rand.nextFloat() * (400 - 16), 10, 10);
 			flag = 1;
 		}
+		//game won
 		if(player.score >= 10) {
 			gameOver = true;
 			whoWon = player.userName;
@@ -73,19 +79,19 @@ public class SinglePlayerState extends BasicGameState {
 			}
 		}
 
-		// Updates
+		// Updates set ai of bot to true
 		player.update(delta, container, false);
 		for (int i = 0; i < gameBots.size(); i++) {
 			gameBots.get(i).update(delta, container, true);
 		}
 
 		// Collisions
-		if(isCollisionShape(player, cube)) {
+		if(isCollisionShape(player, circle)) {
 			player.score++;
 			changeScoreCube();
 		}
 		for (int i = 0; i < gameBots.size(); i++) {
-			if(isCollisionShape(gameBots.get(i), cube)) {
+			if(isCollisionShape(gameBots.get(i), circle)) {
 				gameBots.get(i).score++;
 				changeScoreCube();
 			}
@@ -101,15 +107,16 @@ public class SinglePlayerState extends BasicGameState {
 
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		if(!backToMenu) {
-			player.render(g, Color.red);
+			player.render(g, Color.yellow);
 
 			for (int i = 0; i < gameBots.size(); i++) {
-				gameBots.get(i).render(g, Color.blue);
+				gameBots.get(i).render(g, Color.white);
 			}
 			// render triangle
 			// System.out.println(triangle.getX()+","+triangle.getY()+","+triangle.getWidth()+","+triangle.getHeight());
-			g.setColor(Color.orange);
-			g.fill(cube);
+			g.drawString("powerUP",circle.getX()+20,circle.getY()-10);
+			g.setColor(Color.cyan);
+			g.fill(circle);
 
 			if(MenuState.inputHandler.isKeyDown(Input.KEY_TAB)) {
 				renderScore(container, sbg, g);
@@ -145,8 +152,8 @@ public class SinglePlayerState extends BasicGameState {
 	}
 
 	public void changeScoreCube() {
-		cube.setX(rand.nextFloat() * (800 - 16));
-		cube.setY(rand.nextFloat() * (400 - 16));
+		circle.setX(rand.nextFloat() * (800 - 16));
+		circle.setY(rand.nextFloat() * (400 - 16));
 	}
 	
 	public void renderScore(GameContainer container, StateBasedGame sbg, Graphics g) {
