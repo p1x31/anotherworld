@@ -13,7 +13,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerChar {
 
-	public Shape hitbox;
+	public Shape hitbox; //will it ever shoot?
 	public float x;
 	public float y;
 

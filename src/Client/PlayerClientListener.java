@@ -38,21 +38,23 @@ public class PlayerClientListener extends Listener {
 		else if(object instanceof PacketRemovePlayer){
 			PacketRemovePlayer packet = (PacketRemovePlayer) object;
 			MultiPlayerState.players.remove(packet.id);
+			//X Y
 		} else if(object instanceof PacketUpdateX){
 			PacketUpdateX packet = (PacketUpdateX) object;
 			MultiPlayerState.players.get(packet.id).x = packet.x;
 		} else if(object instanceof PacketUpdateY){
 			PacketUpdateY packet = (PacketUpdateY) object;
 			MultiPlayerState.players.get(packet.id).y = packet.y;
-		} else if(object instanceof PacketUserName){
 			//add player to hashmap
+		} else if(object instanceof PacketUserName){
 			PacketUserName packet = (PacketUserName) object;
 			for(Map.Entry<Integer, MPPlayer> entry : MultiPlayerState.players.entrySet() ){
 				if(entry.getKey() == packet.id){
 					entry.getValue().userName = packet.userName;
 				}
 			}
-		} 
+		}
+		//rand to sync
 		if(object instanceof RandomNumber) {
 			RandomNumber packet = (RandomNumber)object;
 			MultiPlayerState.rand = packet.randomFloat;

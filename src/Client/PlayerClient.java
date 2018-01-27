@@ -34,7 +34,7 @@ public class PlayerClient extends StateBasedGame {
 		this.addState(new CreditsState());
 	}
 
-	//openGL windwon set display
+	//openGL window set display
 	public static void main(String args[]) throws SlickException {
 		userName = getUserNameAndpasswordField_password();
 

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="kryonet-all-2.21">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libraries/kryonet-all-2.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/lwjgl_util-2.9.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/slick.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -63,7 +63,7 @@ public class MultiPlayerState extends BasicGameState {
 
 	public static PlayerChar player = new PlayerChar();
 	static Map<Integer, MPPlayer> players = new HashMap<Integer, MPPlayer>();
-	public static SpeedCube speedCube;
+	//public static SpeedCube speedCube;
 	public static Shape circle;
 
 	public MultiPlayerState() {
@@ -125,7 +125,7 @@ public class MultiPlayerState extends BasicGameState {
 		registerKryoClasses();
 		connect(ip);
 
-		speedCube = new SpeedCube();
+		//speedCube = new SpeedCube();
 	}
 
 	//initialization of the character
@@ -237,7 +237,7 @@ public class MultiPlayerState extends BasicGameState {
 		
 		// Render scoring circle
 		g.setColor(Color.orange);
-		g.drawString("powerUP",circle.getX()+20,circle.getY()-1);
+		g.drawString("powerUP",circle.getX()+20,circle.getY()-10);
 		g.fill(circle);
 		
 //game over
